@@ -1,9 +1,8 @@
-import EventListener from "handlers/events/EventListener.ts";
-import Logger from "../utils/logger.ts";
-
 import { commands } from "../handlers/commands/CommandManager.ts";
-
 import { Client, Events } from "discord.js";
+
+import EventListener from "../handlers/events/EventListener.ts";
+import Logger from "../utils/logger.ts";
 
 export default class Ready extends EventListener {
     constructor() {

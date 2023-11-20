@@ -11,11 +11,9 @@
     "strict": true,
     "downlevelIteration": true,
     "skipLibCheck": true,
-    "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
-    "baseUrl": "./src",
     "types": [
       "bun-types" // add Bun global
     ]

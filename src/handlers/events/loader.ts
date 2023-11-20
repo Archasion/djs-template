@@ -1,12 +1,16 @@
-import { client } from "index.ts";
-
+import path from "path";
 import fs from "fs";
 
+import { client } from "../../index.ts";
+
 export async function loadListeners(): Promise<void> {
-    const filenames = fs.readdirSync("./src/events");
+    const dirpath = path.resolve(__dirname, "../../events");
+    const filenames = fs.readdirSync(dirpath);
 
     for (const filename of filenames) {
-        const listenerModule = await import(`events/${filename}`);
+        const filepath = path.resolve(dirpath, filename);
+
+        const listenerModule = await import(filepath);
         const listenerClass = listenerModule.default;
         const listener = new listenerClass();
 

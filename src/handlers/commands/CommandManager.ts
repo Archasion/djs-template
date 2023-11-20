@@ -1,6 +1,7 @@
-import fs from "fs";
-import Command from "./Command.ts";
 import Logger from "../../utils/logger.ts";
+import Command from "./Command.ts";
+import path from "path";
+import fs from "fs";
 
 import { CommandInteraction } from "discord.js";
 import { client } from "../../index.ts";
@@ -10,10 +11,13 @@ class CommandManager {
 
     // Create instances of all commands and store them in a map
     async register(): Promise<void> {
-        const filenames = fs.readdirSync("./src/commands");
+        const dirpath = path.resolve(__dirname, "../../commands");
+        const filenames = fs.readdirSync(dirpath);
 
         for (const filename of filenames) {
-            const commandModule = await import(`commands/${filename}`);
+            const filepath = path.resolve(dirpath, filename);
+
+            const commandModule = await import(filepath);
             const commandClass = commandModule.default;
             const command = new commandClass();
 
