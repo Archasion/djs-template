@@ -1,0 +1,21 @@
+{
+  "name": "djs-template",
+  "version": "1.0.0",
+  "type": "module",
+  "author": {
+    "name": "Archasion",
+    "url": "https://github.com/Archasion"
+  },
+  "module": "src/index.ts",
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  },
+  "devDependencies": {
+    "bun-types": "^1.0.13",
+    "typescript": "^5.2.2"
+  },
+  "description": "A template for a discord.js bot using bun and TypeScript.",
+  "scripts": {
+    "start": "bun run src/index.ts"
+  }
+}
