@@ -1,5 +1,7 @@
 # djs-template
 
+A bot token passed either via a `.env` file or the `DISCORD_TOKEN` environment variable (see [`.env.example`](.env.example))
+
 To install dependencies:
 
 ```bash
