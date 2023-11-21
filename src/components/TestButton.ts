@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
-import { Button } from "../handlers/buttons/Button.ts";
+import Component from "../handlers/components/Component.ts";
 
-export default class Test extends Button {
+export default class TestButton extends Component {
     constructor() {
         super("test-button");
     }

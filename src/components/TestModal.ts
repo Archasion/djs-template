@@ -1,7 +1,7 @@
 import { Colors, EmbedBuilder, ModalSubmitInteraction } from "discord.js";
-import Modal from "../handlers/modals/Modal.ts";
+import Component from "../handlers/components/Component.ts";
 
-export default class Test extends Modal {
+export default class TestModal extends Component {
     constructor() {
         super("test-modal");
     }

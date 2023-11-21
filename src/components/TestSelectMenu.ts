@@ -1,7 +1,7 @@
 import { StringSelectMenuInteraction } from "discord.js";
-import { SelectMenu } from "../handlers/select_menus/SelectMenu.ts";
+import Component from "../handlers/components/Component.ts";
 
-export default class Test extends SelectMenu {
+export default class TestSelectMenu extends Component {
     constructor() {
         super("test-select-menu");
     }

@@ -1,7 +1,5 @@
-import { selectMenus } from "../handlers/select_menus/SelectMenuManager.ts";
+import { components } from "../handlers/components/ComponentManager.ts";
 import { commands } from "../handlers/commands/CommandManager.ts";
-import { buttons } from "../handlers/buttons/ButtonManager.ts";
-import { modals } from "../handlers/modals/ModalManager.ts";
 import { Client, Events } from "discord.js";
 
 import EventListener from "../handlers/events/EventListener.ts";
@@ -18,10 +16,8 @@ export default class Ready extends EventListener {
         Logger.ready(`Successfully logged in as ${client.user.tag}`);
 
         await Promise.all([
-            selectMenus.register(),
-            commands.register(),
-            buttons.register(),
-            modals.register()
+            components.register(),
+            commands.register()
         ]);
 
         await commands.publish();
