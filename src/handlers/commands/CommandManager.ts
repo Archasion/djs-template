@@ -7,6 +7,7 @@ import { CommandInteraction } from "discord.js";
 import { client } from "../../index.ts";
 
 class CommandManager {
+    // Class instances of commands mapped by their name
     private instances = new Map<string, Command<CommandInteraction>>;
 
     // Create instances of all commands and store them in a map
