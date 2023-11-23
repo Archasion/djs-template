@@ -8,5 +8,5 @@ export default abstract class EventListener {
     }
 
     /** What to do when the event is emitted. */
-    abstract handle(...args: any[]): Promise<void> | void;
+    abstract execute(...args: any[]): Promise<void> | void;
 }

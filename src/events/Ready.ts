@@ -12,7 +12,7 @@ export default class Ready extends EventListener {
         });
     }
 
-    async handle(client: Client<true>): Promise<void> {
+    async execute(client: Client<true>): Promise<void> {
         Logger.ready(`Successfully logged in as ${client.user.tag}`);
 
         await Promise.all([

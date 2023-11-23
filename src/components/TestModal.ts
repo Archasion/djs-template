@@ -6,7 +6,7 @@ export default class TestModal extends Component {
         super("test-modal");
     }
 
-    async handle(interaction: ModalSubmitInteraction): Promise<void> {
+    async execute(interaction: ModalSubmitInteraction): Promise<void> {
         // Get value from input field
         const phrase = interaction.components[0].components[0].value;
 

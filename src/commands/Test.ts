@@ -17,7 +17,7 @@ export default class Test extends Command<ChatInputCommandInteraction> {
         });
     }
 
-    async handle(interaction: ChatInputCommandInteraction): Promise<void> {
+    async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const button = new ButtonBuilder()
             .setCustomId("test-button")
             .setStyle(ButtonStyle.Primary)

@@ -5,5 +5,5 @@ export type ComponentInteraction = MessageComponentInteraction | ModalSubmitInte
 export default abstract class Component {
     protected constructor(public customId: string) {}
 
-    abstract handle(interaction: ComponentInteraction): Promise<void> | void;
+    abstract execute(interaction: ComponentInteraction): Promise<void> | void;
 }

@@ -9,7 +9,7 @@ export default class InteractionCreate extends EventListener {
         super(Events.InteractionCreate);
     }
 
-    async handle(interaction: Interaction): Promise<void> {
+    async execute(interaction: Interaction): Promise<void> {
         if (interaction.isCommand()) {
             await commands.handle(interaction);
             return;

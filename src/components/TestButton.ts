@@ -6,7 +6,7 @@ export default class TestButton extends Component {
         super("test-button");
     }
 
-    async handle(interaction: ButtonInteraction): Promise<void> {
+    async execute(interaction: ButtonInteraction): Promise<void> {
         const input = new TextInputBuilder()
             .setCustomId("test-input")
             .setLabel("Phrase")
