@@ -1,10 +1,10 @@
-import { Events } from "discord.js";
+import { ClientEvents, Events } from "discord.js";
 
 /**
  * A class that handles an event.
  */
 export default abstract class EventListener {
-    protected constructor(public event: Events, public options?: { once: boolean }) {
+    protected constructor(public event: Extract<Events, keyof ClientEvents>, public options?: { once: boolean }) {
     }
 
     /** What to do when the event is emitted. */

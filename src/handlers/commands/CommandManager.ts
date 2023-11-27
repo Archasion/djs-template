@@ -5,6 +5,7 @@ import fs from "fs";
 
 import { CommandInteraction } from "discord.js";
 import { client } from "../../index.ts";
+import { AbstractInstanceType } from "../../utils/types.ts";
 
 class CommandManager {
     // Class instances of commands mapped by their name
@@ -20,7 +21,7 @@ class CommandManager {
 
             const commandModule = await import(filepath);
             const commandClass = commandModule.default;
-            const command = new commandClass();
+            const command: AbstractInstanceType<typeof Command<CommandInteraction>> = new commandClass();
 
             this.instances.set(command.data.name, command);
         }
@@ -48,7 +49,7 @@ class CommandManager {
             throw new Error(`Command "${interaction.commandName}" not found`);
         }
 
-        await command.handle(interaction);
+        await command.execute(interaction);
     }
 }
 

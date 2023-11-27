@@ -1,3 +1,4 @@
+import { AbstractInstanceType } from "../../utils/types.ts";
 import Component, { ComponentInteraction } from "./Component.ts";
 import Logger from "../../utils/logger.ts";
 import path from "path";
@@ -17,7 +18,7 @@ class ComponentManager {
 
             const componentModule = await import(filepath);
             const componentClass = componentModule.default;
-            const component = new componentClass();
+            const component: AbstractInstanceType<typeof Component> = new componentClass();
 
             this.instances.set(component.customId, component);
         }
@@ -32,7 +33,7 @@ class ComponentManager {
             throw new Error(`Component "${interaction.customId}" not found`);
         }
 
-        await component.handle(interaction);
+        await component.execute(interaction);
     }
 }
 
