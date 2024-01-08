@@ -3,7 +3,7 @@ import { commands } from "../handlers/commands/CommandManager.ts";
 import { Client, Events } from "discord.js";
 
 import EventListener from "../handlers/events/EventListener.ts";
-import Logger from "../utils/logger.ts";
+import Logger, { AnsiColor } from "../utils/logger.ts";
 
 export default class Ready extends EventListener {
     constructor() {
@@ -13,7 +13,10 @@ export default class Ready extends EventListener {
     }
 
     async execute(client: Client<true>): Promise<void> {
-        Logger.ready(`Successfully logged in as ${client.user.tag}`);
+        Logger.log("READY", `Successfully logged in as ${client.user.tag}`, {
+            color: AnsiColor.Green,
+            fullColor: true
+        });
 
         await Promise.all([
             components.register(),
