@@ -1,3 +1,4 @@
+import { InteractionExecuteError, ensureError } from "../utils/errors.ts";
 import { components } from "../handlers/components/ComponentManager.ts";
 import { commands } from "../handlers/commands/CommandManager.ts";
 import { Events, Interaction } from "discord.js";
@@ -10,16 +11,23 @@ export default class InteractionCreate extends EventListener {
     }
 
     async execute(interaction: Interaction): Promise<void> {
-        if (interaction.isCommand()) {
-            await commands.handle(interaction);
-            return;
+        if (interaction.isAutocomplete()) {
+            throw new Error(`Autocomplete interactions are not supported`);
         }
 
-        if (interaction.isMessageComponent() || interaction.isModalSubmit()) {
-            await components.handle(interaction);
-            return;
-        }
+        try {
+            if (interaction.isCommand()) {
+                await commands.handle(interaction);
+                return;
+            }
 
-        throw new Error(`Interactions of type ${interaction.type} are not supported`);
+            if (interaction.isMessageComponent() || interaction.isModalSubmit()) {
+                await components.handle(interaction);
+                return;
+            }
+        } catch (_error) {
+            const cause = ensureError(_error);
+            throw new InteractionExecuteError(interaction, cause);
+        }
     }
 }

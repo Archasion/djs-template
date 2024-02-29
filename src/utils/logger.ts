@@ -10,7 +10,7 @@ export enum AnsiColor {
     Green = "\x1b[32m",
     Cyan = "\x1b[36m",
     Grey = "\x1b[90m",
-    Purple = "\x1b[35m",
+    Red = "\x1b[31m"
 }
 
 export default class Logger {
@@ -21,7 +21,7 @@ export default class Logger {
         if (options?.color && !options.fullColor) {
             console.log(`${timestampString} ${options.color}[${level}]${AnsiColor.Reset} ${message}`);
         } else if (options?.color && options.fullColor) {
-            console.log(`${timestampString} ${options.color}[${level}] ${message}`);
+            console.log(`${timestampString} ${options.color}[${level}] ${message}${AnsiColor.Reset}`);
         } else {
             console.log(`\x1b[32m${timestampString}${AnsiColor.Reset} [${level}] ${message}`);
         }
@@ -33,9 +33,9 @@ export default class Logger {
         });
     }
 
-    static trace(message: string): void {
-        Logger.log("TRACE", message, {
-            color: AnsiColor.Purple
+    static error(message: string): void {
+        Logger.log("ERROR", message, {
+            color: AnsiColor.Red
         });
     }
 }

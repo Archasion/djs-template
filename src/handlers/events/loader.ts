@@ -4,6 +4,8 @@ import fs from "fs";
 
 import { client } from "../../index.ts";
 import { AbstractInstanceType } from "../../utils/types.ts";
+import Logger from "../../utils/logger.ts";
+import { pluralize } from "../../utils";
 
 export async function loadListeners(): Promise<void> {
     const dirpath = path.resolve(__dirname, "../../events");
@@ -25,4 +27,6 @@ export async function loadListeners(): Promise<void> {
         // Handle the event every time it is emitted
         client.on(listener.event, (...args) => listener.execute(...args));
     }
+
+    Logger.info(`Loaded ${filenames.length} ${pluralize(filenames.length, "event listener")}`);
 }
