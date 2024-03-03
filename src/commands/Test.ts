@@ -1,5 +1,5 @@
 import {
-    ActionRowBuilder,
+    ActionRowBuilder, AutocompleteInteraction,
     ButtonBuilder,
     ButtonStyle,
     ChatInputCommandInteraction,
@@ -38,5 +38,18 @@ export default class Test extends Command<ChatInputCommandInteraction> {
             content: "Interact with the components below to test them!",
             components: [selectMenuActionRow, buttonActionRow]
         });
+    }
+
+    async autocomplete(interaction: AutocompleteInteraction): Promise<void> {
+        const query = interaction.options.getFocused();
+        const choices = ["hello", "world", "foo", "bar"];
+        const filtered = choices.filter(choice => choice.startsWith(query));
+
+        const options = filtered.map(choice => ({
+            name: choice,
+            value: choice
+        }));
+
+        await interaction.respond(options);
     }
 }

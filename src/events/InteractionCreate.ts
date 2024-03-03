@@ -11,10 +11,6 @@ export default class InteractionCreate extends EventListener {
     }
 
     async execute(interaction: Interaction): Promise<void> {
-        if (interaction.isAutocomplete()) {
-            throw new Error(`Autocomplete interactions are not supported`);
-        }
-
         try {
             if (interaction.isCommand()) {
                 await commands.handle(interaction);
@@ -23,6 +19,11 @@ export default class InteractionCreate extends EventListener {
 
             if (interaction.isMessageComponent() || interaction.isModalSubmit()) {
                 await components.handle(interaction);
+                return;
+            }
+
+            if (interaction.isAutocomplete()) {
+                await commands.handleAutocomplete(interaction);
                 return;
             }
         } catch (_error) {

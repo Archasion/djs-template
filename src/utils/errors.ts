@@ -1,4 +1,4 @@
-import { AutocompleteInteraction, Interaction } from "discord.js";
+import { Interaction } from "discord.js";
 
 export enum ErrorType {
     UnknownError = "UnknownError",
@@ -23,8 +23,8 @@ export class BaseError extends Error {
 }
 
 export class InteractionExecuteError extends BaseError {
-    constructor(interaction: Exclude<Interaction, AutocompleteInteraction>, cause: Error) {
-        const interactionName = interaction.isCommand()
+    constructor(interaction: Interaction, cause: Error) {
+        const interactionName = interaction.isCommand() || interaction.isAutocomplete()
             ? interaction.commandName
             : interaction.customId;
 

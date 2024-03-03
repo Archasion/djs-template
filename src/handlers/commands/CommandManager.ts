@@ -3,7 +3,7 @@ import Command from "./Command.ts";
 import path from "path";
 import fs from "fs";
 
-import { CommandInteraction } from "discord.js";
+import { AutocompleteInteraction, CommandInteraction } from "discord.js";
 import { client } from "../../index.ts";
 import { AbstractInstanceType } from "../../utils/types.ts";
 import { pluralize } from "../../utils";
@@ -67,6 +67,22 @@ class CommandManager {
         Logger.info(`Executing command ${interaction.commandName}`);
         await command.execute(interaction);
         Logger.info(`Successfully executed command ${interaction.commandName}`);
+    }
+
+    async handleAutocomplete(interaction: AutocompleteInteraction): Promise<void> {
+        const command = this.instances.get(interaction.commandName);
+
+        if (!command) {
+            throw new Error(`Command "${interaction.commandName}" not found`);
+        }
+
+        if (!command.autocomplete) {
+            throw new Error(`Command "${interaction.commandName}" does not have an autocomplete method`);
+        }
+
+        Logger.info(`Executing autocomplete for ${interaction.commandName}`);
+        await command.autocomplete(interaction);
+        Logger.info(`Successfully executed autocomplete for ${interaction.commandName}`);
     }
 }
 
