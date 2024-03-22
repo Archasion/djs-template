@@ -1,15 +1,38 @@
+# Node.js dependencies directory
 node_modules
+
+# Docker configuration files
 Dockerfile*
 docker-compose*
+
+# Docker ignore file
 .dockerignore
+
+# Git directory and ignore file
 .git
 .gitignore
+
+# Documentation files
 README.md
 LICENSE
+
+# Visual Studio Code configuration directory
 .vscode
+
+# Makefile for automating tasks
 Makefile
+
+# Helm charts directory for Kubernetes
 helm-charts
+
+# Environment configuration files
 .env*
+
+# Editor configuration file
 .editorconfig
+
+# JetBrains IDE configuration directory
 .idea
+
+# Code coverage reports
 coverage*

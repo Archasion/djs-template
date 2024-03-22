@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-	"lib": [
-	  "ESNext"
-	],
+	"lib": ["ESNext"],
+	"types": ["bun-types"],
 	"module": "esnext",
 	"target": "esnext",
 	"moduleResolution": "bundler",
@@ -16,14 +15,14 @@
 	"allowSyntheticDefaultImports": true,
 	"forceConsistentCasingInFileNames": true,
 	"allowJs": true,
-	"types": [
-	  "bun-types"
-	  // add Bun global
-	]
+	"paths": {
+	  "@/*": ["src/*"],
+	  "@data/*": ["data/*"]
+	}
   },
   "include": [
 	"./data/**/*.json",
 	"./src/**/*",
-	"./tests/**/*",
+	"./tests/**/*"
   ]
 }

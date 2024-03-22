@@ -1,10 +1,11 @@
-import { InteractionExecuteError, ensureError } from "../utils/errors.ts";
-import { components } from "../handlers/components/ComponentManager.ts";
-import { commands } from "../handlers/commands/CommandManager.ts";
+import { InteractionExecuteError, ensureError } from "@/utils/errors.ts";
+import { components } from "@/handlers/components/ComponentManager.ts";
+import { commands } from "@/handlers/commands/CommandManager.ts";
 import { Events, Interaction } from "discord.js";
 
-import EventListener from "../handlers/events/EventListener.ts";
+import EventListener from "@/handlers/events/EventListener.ts";
 
+// noinspection JSUnusedGlobalSymbols
 export default class InteractionCreate extends EventListener {
     constructor() {
         super(Events.InteractionCreate);

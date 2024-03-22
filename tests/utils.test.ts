@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { pluralize } from "../src/utils";
+import { pluralize } from "@/utils";
 
 describe("utils", () => {
     test("pluralize", () => {

@@ -3,8 +3,8 @@ import { Interaction } from "discord.js";
 export enum ErrorType {
     UnknownError = "UnknownError",
     CommandPublishError = "CommandPublishError",
-    CommandRegisterError = "CommandRegisterError",
-    ComponentRegisterError = "ComponentRegisterError",
+    CommandCachingError = "CommandCachingError",
+    ComponentCachingError = "ComponentCachingError",
     InteractionExecutionError = "InteractionExecutionError"
 }
 

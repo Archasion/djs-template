@@ -1,17 +1,19 @@
-import { AbstractInstanceType } from "../../utils/types.ts";
-import Component, { ComponentInteraction } from "./Component.ts";
-import Logger from "../../utils/logger.ts";
+import Component, { ComponentInteraction, CustomID } from "./Component.ts";
+import Logger from "@/utils/logger.ts";
 import path from "path";
 import fs from "fs";
-import { pluralize } from "../../utils";
-import { BaseError, ensureError, ErrorType } from "../../utils/errors.ts";
 
+import { BaseError, ensureError, ErrorType } from "@/utils/errors.ts";
+import { AbstractInstanceType } from "@/utils/types.ts";
+import { pluralize } from "@/utils";
+
+/** Utility class for handling component interactions. */
 class ComponentManager {
-    // Class instances of components mapped by their customId
-    private instances = new Map<string, Component>;
+    /** Cached components mapped by their custom IDs. */
+    private _cache = new Map<CustomID, Component>;
 
-    // Create instances of all components and store them in a map
-    async register(): Promise<void> {
+    /** Caches all components from the components directory. */
+    async cache(): Promise<void> {
         try {
             const dirpath = path.resolve(__dirname, "../../components");
             const filenames = fs.readdirSync(dirpath);
@@ -23,22 +25,22 @@ class ComponentManager {
                 const componentClass = componentModule.default;
                 const component: AbstractInstanceType<typeof Component> = new componentClass();
 
-                this.instances.set(component.customId, component);
+                this._cache.set(component.customId, component);
             }
         } catch (_error) {
             const cause = ensureError(_error);
 
-            throw new BaseError("Failed to register components", {
-                name: ErrorType.ComponentRegisterError,
+            throw new BaseError("Failed to cache components", {
+                name: ErrorType.ComponentCachingError,
                 cause
             });
         }
 
-        Logger.info(`Registered ${this.instances.size} ${pluralize(this.instances.size, "component")}`);
+        Logger.info(`Cached ${this._cache.size} ${pluralize(this._cache.size, "component")}`);
     }
 
     async handle(interaction: ComponentInteraction): Promise<void> {
-        const component = this.instances.get(interaction.customId);
+        const component = this._cache.get(interaction.customId);
 
         if (!component) {
             throw new Error(`Component "${interaction.customId}" not found`);
@@ -48,4 +50,5 @@ class ComponentManager {
     }
 }
 
+/** The global component manager. */
 export const components = new ComponentManager();

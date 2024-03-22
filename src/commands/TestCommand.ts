@@ -1,15 +1,18 @@
+import Command from "@/handlers/commands/Command.ts";
+
 import {
-    ActionRowBuilder, AutocompleteInteraction,
+    ActionRowBuilder,
+    AutocompleteInteraction,
     ButtonBuilder,
     ButtonStyle,
     ChatInputCommandInteraction,
     StringSelectMenuBuilder
 } from "discord.js";
 
-import Command from "../handlers/commands/Command.ts";
-import { options } from "../../data/examples/select-menu.json";
+import { options } from "@data/examples/select-menu.json";
 
-export default class Test extends Command<ChatInputCommandInteraction> {
+// noinspection JSUnusedGlobalSymbols
+export default class TestCommand extends Command<ChatInputCommandInteraction> {
     constructor() {
         super({
             name: "test",

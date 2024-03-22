@@ -1,14 +1,10 @@
-import { AbstractInstanceType } from "../src/utils/types.ts";
-import { Snowflake } from "discord-api-types/v10";
-import { expect, test, describe } from "bun:test";
-
-import fs from "fs";
-import path from "path";
+import EventListener from "@/handlers/events/EventListener.ts";
+import Component from "@/handlers/components/Component.ts";
 import Command from "../src/handlers/commands/Command";
-import Component from "../src/handlers/components/Component";
-import EventListener from "../src/handlers/events/EventListener";
+import path from "path";
+import fs from "fs";
 
-const customIDs: Snowflake[] = [];
+import { expect, test, describe } from "bun:test";
 
 describe("exports", () => {
     verifyModule("components", Component);
@@ -16,19 +12,19 @@ describe("exports", () => {
     verifyModule("events", EventListener);
 });
 
+/**
+ * Verifies that all modules in the specified directory are of the expected class.
+ * @param dirname The directory name.
+ * @param expectedClass The expected class.
+ */
 function verifyModule(dirname: string, expectedClass: Function): void {
-    const modulesDirectoryPath = path.resolve(__dirname, "../src", dirname);
-    const moduleFiles = fs.readdirSync(modulesDirectoryPath);
+    const moduleDirpath = path.resolve(__dirname, "../src", dirname);
+    const moduleFiles = fs.readdirSync(moduleDirpath);
 
     test.each(moduleFiles)(`${dirname}: %s`, moduleFile => {
-        const moduleFilePath = path.resolve(modulesDirectoryPath, moduleFile);
-        const module = require(moduleFilePath).default;
+        const moduleFilepath = path.resolve(moduleDirpath, moduleFile);
+        const module = require(moduleFilepath).default;
 
         expect(Object.getPrototypeOf(module)).toStrictEqual(expectedClass);
-
-        const instance: AbstractInstanceType<typeof Command | typeof Component> = new module();
-
-        if (instance instanceof Component) customIDs.push(instance.customId);
-        if (instance instanceof Command) customIDs.push(instance.data.name);
     });
 }

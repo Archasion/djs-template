@@ -1,10 +1,11 @@
-import { components } from "../handlers/components/ComponentManager.ts";
-import { commands } from "../handlers/commands/CommandManager.ts";
+import EventListener from "@/handlers/events/EventListener.ts";
+import Logger, { AnsiColor } from "@/utils/logger.ts";
+
+import { components } from "@/handlers/components/ComponentManager.ts";
+import { commands } from "@/handlers/commands/CommandManager.ts";
 import { Client, Events } from "discord.js";
 
-import EventListener from "../handlers/events/EventListener.ts";
-import Logger, { AnsiColor } from "../utils/logger.ts";
-
+// noinspection JSUnusedGlobalSymbols
 export default class Ready extends EventListener {
     constructor() {
         super(Events.ClientReady, {
@@ -19,8 +20,8 @@ export default class Ready extends EventListener {
         });
 
         await Promise.all([
-            components.register(),
-            commands.register()
+            components.cache(),
+            commands.cache()
         ]);
 
         await commands.publish();

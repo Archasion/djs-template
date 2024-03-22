@@ -1,12 +1,19 @@
 import { ClientEvents, Events } from "discord.js";
 
-/**
- * A class that handles an event.
- */
+/** The base class for all event listeners. */
 export default abstract class EventListener {
+    /**
+     * @param event The event to handle.
+     * @param options The options for the event.
+     * @param options.once Whether the event should only be handled once.
+     * @protected
+     */
     protected constructor(public event: Extract<Events, keyof ClientEvents>, public options?: { once: boolean }) {
     }
 
-    /** What to do when the event is emitted. */
-    abstract execute(...args: any[]): Promise<void> | void;
+    /**
+     * Handles the event.
+     * @param args The arguments to pass to the event listener.
+     */
+    abstract execute(...args: unknown[]): Promise<void> | void;
 }

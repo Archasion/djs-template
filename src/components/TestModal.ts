@@ -1,6 +1,8 @@
-import { Colors, EmbedBuilder, ModalSubmitInteraction } from "discord.js";
-import Component from "../handlers/components/Component.ts";
+import Component from "@/handlers/components/Component.ts";
 
+import { Colors, EmbedBuilder, ModalSubmitInteraction } from "discord.js";
+
+// noinspection JSUnusedGlobalSymbols
 export default class TestModal extends Component {
     constructor() {
         super("test-modal");
