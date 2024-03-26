@@ -20,29 +20,29 @@ export default class Logger {
     /**
      * Logs a message to the console.
      *
-     * - **Output format**: `[timestamp] [tag] {message}`
+     * - **Output format**: `[timestamp] [level] {message}`
      * - **Example**: `[1970-01-01T00:00:00.000Z] [INFO] Hello, world!`
      *
-     * @param tag The tag for the log.
+     * @param level The level for the log.
      * @param message The message to log.
      * @param options The options for the logger.
      */
-    static log(tag: string, message: string, options?: ColorOptions): void {
+    static log(level: string, message: string, options?: ColorOptions): void {
         const timestamp = new Date().toISOString();
         const formattedTimestamp = `${AnsiColor.Grey}[${timestamp}]${AnsiColor.Reset}`;
 
         // Default output if no color is specified.
         if (!options?.color) {
-            console.log(`\x1b[32m${formattedTimestamp}${AnsiColor.Reset} [${tag}] ${message}`);
+            console.log(`\x1b[32m${formattedTimestamp}${AnsiColor.Reset} [${level}] ${message}`);
             return;
         }
 
         if (options.fullColor) {
             // Color the entire log.
-            console.log(`${formattedTimestamp} ${options.color}[${tag}] ${message}${AnsiColor.Reset}`);
+            console.log(`${formattedTimestamp} ${options.color}[${level}] ${message}${AnsiColor.Reset}`);
         } else {
             // Only color the tag.
-            console.log(`${formattedTimestamp} ${options.color}[${tag}]${AnsiColor.Reset} ${message}`);
+            console.log(`${formattedTimestamp} ${options.color}[${level}]${AnsiColor.Reset} ${message}`);
         }
     }
 
