@@ -1,5 +1,3 @@
-import Command from "@/handlers/commands/Command.ts";
-
 import {
     ActionRowBuilder,
     AutocompleteInteraction,
@@ -9,25 +7,28 @@ import {
     StringSelectMenuBuilder
 } from "discord.js";
 
+import { suggestions } from "@data/examples/autocomplete.json";
 import { options } from "@data/examples/select-menu.json";
 
+import Command from "@/handlers/commands/Command.ts";
+
 // noinspection JSUnusedGlobalSymbols
-export default class TestCommand extends Command<ChatInputCommandInteraction> {
+export default class ExampleCommand extends Command<ChatInputCommandInteraction> {
     constructor() {
         super({
-            name: "test",
+            name: "example",
             description: "Test all interactions",
         });
     }
 
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         const button = new ButtonBuilder()
-            .setCustomId("test-button")
+            .setCustomId("example-button")
             .setStyle(ButtonStyle.Primary)
             .setLabel("Open Modal");
 
         const selectMenu = new StringSelectMenuBuilder()
-            .setCustomId("test-select-menu")
+            .setCustomId("example-select-menu")
             .setPlaceholder("Select option...")
             .setOptions(options);
 
@@ -44,14 +45,18 @@ export default class TestCommand extends Command<ChatInputCommandInteraction> {
     }
 
     async autocomplete(interaction: AutocompleteInteraction): Promise<void> {
+        // Get the input as it is being typed
         const query = interaction.options.getFocused();
-        const choices = ["hello", "world", "foo", "bar"];
-        const filtered = choices.filter(choice => choice.startsWith(query));
+        const queriedSuggestions: string[] = suggestions.filter((suggestion: string) => suggestion.startsWith(query));
 
-        const options = filtered.map(choice => ({
-            name: choice,
-            value: choice
-        }));
+        const options = queriedSuggestions.map(suggestion => {
+            const id = suggestion
+                .split(" ")
+                .join("-")
+                .toLowerCase();
+
+            return { name: suggestion, value: id };
+        });
 
         await interaction.respond(options);
     }

@@ -1,33 +1,36 @@
-import Logger from "@/utils/logger.ts";
-import Command from "./Command.ts";
-import path from "path";
-import fs from "fs";
-
 import { AutocompleteInteraction, CommandInteraction } from "discord.js";
 import { BaseError, ensureError, ErrorType } from "@/utils/errors.ts";
 import { AbstractInstanceType } from "@/utils/types.ts";
 import { pluralize } from "@/utils";
 import { client } from "@/index.ts";
 
+import Logger from "@/utils/logger.ts";
+import Command from "./Command.ts";
+import path from "path";
+import fs from "fs";
+
 /** Utility class for handling command interactions. */
-class CommandManager {
+export default class CommandManager {
     /** Cached commands mapped by their names. */
-    private _cache = new Map<string, Command<CommandInteraction>>;
+    private static _cache = new Map<string, Command<CommandInteraction>>;
 
     /** Caches all commands from the commands directory. */
-    async cache(): Promise<void> {
-        try {
-            const dirpath = path.resolve(__dirname, "../../commands");
-            const filenames = fs.readdirSync(dirpath);
+    static async cache(): Promise<void> {
+        // Resolve the path to the commands directory [src/commands]
+        const dirpath = path.resolve(__dirname, "../../commands");
+        const filenames = fs.readdirSync(dirpath);
 
+        try {
             for (const filename of filenames) {
                 const filepath = path.resolve(dirpath, filename);
 
+                // Import and initiate the command
                 const commandModule = await import(filepath);
                 const commandClass = commandModule.default;
                 const command: AbstractInstanceType<typeof Command<CommandInteraction>> = new commandClass();
 
-                this._cache.set(command.data.name, command);
+                // Cache the command
+                CommandManager._cache.set(command.data.name, command);
             }
         } catch (_error) {
             const cause = ensureError(_error);
@@ -38,13 +41,15 @@ class CommandManager {
             });
         }
 
-        Logger.info(`Cached ${this._cache.size} ${pluralize(this._cache.size, "command")}`);
+        const cacheSize = CommandManager._cache.size;
+        Logger.info(`Cached ${cacheSize} ${pluralize(cacheSize, "command")}`);
     }
 
-    /** Publishes all cached commands to Discord (globally). */
-    async publish(): Promise<void> {
+    /** Publish all cached commands to Discord (globally). */
+    static async publish(): Promise<void> {
+        // Retrieve all cached commands and build them
         const commands = Array
-            .from(this._cache.values())
+            .from(CommandManager._cache.values())
             .map(command => command.build());
 
         // No commands to publish
@@ -53,7 +58,7 @@ class CommandManager {
         const publishedCommands = await client.application?.commands.set(commands);
 
         if (!publishedCommands) {
-            throw new BaseError("Failed to publish commands", {
+            throw new BaseError("Failed to publish global commands", {
                 name: ErrorType.CommandPublishError
             });
         }
@@ -62,34 +67,30 @@ class CommandManager {
     }
 
     /** Handles a command interaction. */
-    async handle(interaction: CommandInteraction): Promise<void> {
-        const command = this._cache.get(interaction.commandName);
+    static async handle(interaction: CommandInteraction): Promise<void> {
+        // Retrieve the command's instance from cache by its name
+        const command = CommandManager._cache.get(interaction.commandName);
 
         if (!command) {
             throw new Error(`Command "${interaction.commandName}" not found`);
         }
 
-        Logger.info(`Executing command "${interaction.commandName}"`);
         await command.execute(interaction);
-        Logger.info(`Successfully executed command "${interaction.commandName}"`);
     }
 
-    async handleAutocomplete(interaction: AutocompleteInteraction): Promise<void> {
-        const command = this._cache.get(interaction.commandName);
+    static async handleAutocomplete(interaction: AutocompleteInteraction): Promise<void> {
+        // Retrieve the command's instance from cache by its name
+        const command = CommandManager._cache.get(interaction.commandName);
 
         if (!command) {
             throw new Error(`Command "${interaction.commandName}" not found`);
         }
 
+        // Ensure the command has an autocomplete() method
         if (!command.autocomplete) {
             throw new Error(`Command "${interaction.commandName}" does not have an autocomplete() method`);
         }
 
-        Logger.info(`Executing autocomplete for "${interaction.commandName}"`);
         await command.autocomplete(interaction);
-        Logger.info(`Successfully executed autocomplete for "${interaction.commandName}"`);
     }
 }
-
-/** The global command manager. */
-export const commands = new CommandManager();

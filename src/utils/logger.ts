@@ -1,5 +1,5 @@
 /** Options for the logger. */
-interface LoggerOptions {
+interface ColorOptions {
     /** The color to use for the log. */
     color?: AnsiColor;
     /** Whether to use full color formatting. */
@@ -19,31 +19,41 @@ export enum AnsiColor {
 export default class Logger {
     /**
      * Logs a message to the console.
-     * @param level The log level.
+     *
+     * - **Output format**: `[timestamp] [tag] {message}`
+     * - **Example**: `[1970-01-01T00:00:00.000Z] [INFO] Hello, world!`
+     *
+     * @param tag The tag for the log.
      * @param message The message to log.
      * @param options The options for the logger.
      */
-    static log(level: string, message: string, options?: LoggerOptions): void {
+    static log(tag: string, message: string, options?: ColorOptions): void {
         const timestamp = new Date().toISOString();
-        const timestampString = `${AnsiColor.Grey}[${timestamp}]${AnsiColor.Reset}`;
+        const formattedTimestamp = `${AnsiColor.Grey}[${timestamp}]${AnsiColor.Reset}`;
 
-        if (options?.color && !options.fullColor) {
-            console.log(`${timestampString} ${options.color}[${level}]${AnsiColor.Reset} ${message}`);
-        } else if (options?.color && options.fullColor) {
-            console.log(`${timestampString} ${options.color}[${level}] ${message}${AnsiColor.Reset}`);
+        // Default output if no color is specified.
+        if (!options?.color) {
+            console.log(`\x1b[32m${formattedTimestamp}${AnsiColor.Reset} [${tag}] ${message}`);
+            return;
+        }
+
+        if (options.fullColor) {
+            // Color the entire log.
+            console.log(`${formattedTimestamp} ${options.color}[${tag}] ${message}${AnsiColor.Reset}`);
         } else {
-            console.log(`\x1b[32m${timestampString}${AnsiColor.Reset} [${level}] ${message}`);
+            // Only color the tag.
+            console.log(`${formattedTimestamp} ${options.color}[${tag}]${AnsiColor.Reset} ${message}`);
         }
     }
 
-    /** Logs an info message to the console. */
+    /** Uses {@link Logger#log} with a cyan `[INFO]` tag */
     static info(message: string): void {
         Logger.log("INFO", message, {
             color: AnsiColor.Cyan
         });
     }
 
-    /** Logs an error message to the console. */
+    /** Uses {@link Logger#log} with a red `[ERROR]` tag */
     static error(message: string): void {
         Logger.log("ERROR", message, {
             color: AnsiColor.Red

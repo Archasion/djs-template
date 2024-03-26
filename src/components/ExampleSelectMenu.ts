@@ -1,11 +1,11 @@
-import Component from "@/handlers/components/Component.ts";
-
 import { StringSelectMenuInteraction } from "discord.js";
 
+import Component from "@/handlers/components/Component.ts";
+
 // noinspection JSUnusedGlobalSymbols
-export default class TestSelectMenu extends Component {
+export default class ExampleSelectMenu extends Component {
     constructor() {
-        super("test-select-menu");
+        super("example-select-menu");
     }
 
     async execute(interaction: StringSelectMenuInteraction): Promise<void> {

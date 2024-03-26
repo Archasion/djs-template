@@ -1,9 +1,9 @@
+import { Client, Events } from "discord.js";
+
+import ComponentManager from "@/handlers/components/ComponentManager.ts";
+import CommandManager from "@/handlers/commands/CommandManager.ts";
 import EventListener from "@/handlers/events/EventListener.ts";
 import Logger, { AnsiColor } from "@/utils/logger.ts";
-
-import { components } from "@/handlers/components/ComponentManager.ts";
-import { commands } from "@/handlers/commands/CommandManager.ts";
-import { Client, Events } from "discord.js";
 
 // noinspection JSUnusedGlobalSymbols
 export default class Ready extends EventListener {
@@ -20,10 +20,10 @@ export default class Ready extends EventListener {
         });
 
         await Promise.all([
-            components.cache(),
-            commands.cache()
+            ComponentManager.cache(),
+            CommandManager.cache()
         ]);
 
-        await commands.publish();
+        await CommandManager.publish();
     }
 }

@@ -6,7 +6,8 @@ export default abstract class Component {
      * @param customId The custom ID of the component.
      * @protected
      */
-    protected constructor(public customId: CustomID) {}
+    protected constructor(public customId: CustomID) {
+    }
 
     /**
      * Handles the component interaction.

@@ -104,7 +104,6 @@ web_modules/
 
 # parcel-bundler cache (https://parceljs.org/)
 
-.cache
 .parcel-cache
 
 # Next.js build output
@@ -116,10 +115,6 @@ out
 
 .nuxt
 dist
-
-# Gatsby files
-
-.cache/
 
 # Comment in the public line in if your project uses Gatsby and not Next.js
 
@@ -173,4 +168,3 @@ dist
 
 # Finder (MacOS) folder config
 .DS_Store
-

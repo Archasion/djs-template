@@ -1,31 +1,34 @@
+import { BaseError, ensureError, ErrorType } from "@/utils/errors.ts";
+import { AbstractInstanceType } from "@/utils/types.ts";
+import { pluralize } from "@/utils";
+
 import Component, { ComponentInteraction, CustomID } from "./Component.ts";
 import Logger from "@/utils/logger.ts";
 import path from "path";
 import fs from "fs";
 
-import { BaseError, ensureError, ErrorType } from "@/utils/errors.ts";
-import { AbstractInstanceType } from "@/utils/types.ts";
-import { pluralize } from "@/utils";
-
 /** Utility class for handling component interactions. */
-class ComponentManager {
+export default class ComponentManager {
     /** Cached components mapped by their custom IDs. */
-    private _cache = new Map<CustomID, Component>;
+    private static _cache = new Map<CustomID, Component>;
 
     /** Caches all components from the components directory. */
-    async cache(): Promise<void> {
-        try {
-            const dirpath = path.resolve(__dirname, "../../components");
-            const filenames = fs.readdirSync(dirpath);
+    static async cache(): Promise<void> {
+        // Resolve the path to the components directory [src/components]
+        const dirpath = path.resolve(__dirname, "../../components");
+        const filenames = fs.readdirSync(dirpath);
 
+        try {
             for (const filename of filenames) {
                 const filepath = path.resolve(dirpath, filename);
 
+                // Import and initiate the component
                 const componentModule = await import(filepath);
                 const componentClass = componentModule.default;
                 const component: AbstractInstanceType<typeof Component> = new componentClass();
 
-                this._cache.set(component.customId, component);
+                // Cache the component
+                ComponentManager._cache.set(component.customId, component);
             }
         } catch (_error) {
             const cause = ensureError(_error);
@@ -36,11 +39,13 @@ class ComponentManager {
             });
         }
 
-        Logger.info(`Cached ${this._cache.size} ${pluralize(this._cache.size, "component")}`);
+        const cacheSize = ComponentManager._cache.size;
+        Logger.info(`Cached ${cacheSize} ${pluralize(cacheSize, "component")}`);
     }
 
-    async handle(interaction: ComponentInteraction): Promise<void> {
-        const component = this._cache.get(interaction.customId);
+    static async handle(interaction: ComponentInteraction): Promise<void> {
+        // Retrieve the component's instance from cache by its custom ID
+        const component = ComponentManager._cache.get(interaction.customId);
 
         if (!component) {
             throw new Error(`Component "${interaction.customId}" not found`);
@@ -49,6 +54,3 @@ class ComponentManager {
         await component.execute(interaction);
     }
 }
-
-/** The global component manager. */
-export const components = new ComponentManager();
