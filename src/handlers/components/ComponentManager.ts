@@ -1,5 +1,4 @@
 import { BaseError, ensureError, ErrorType } from "@/utils/errors";
-import { AbstractInstanceType } from "@/utils/types";
 import { pluralize } from "@/utils";
 
 import Component, { ComponentInteraction, CustomID } from "./Component";
@@ -22,7 +21,9 @@ export default class ComponentManager {
         }
 
         Logger.info("Caching components...");
+
         const filenames = fs.readdirSync(dirpath);
+        let componentCount = 0;
 
         try {
             for (const filename of filenames) {
@@ -31,7 +32,12 @@ export default class ComponentManager {
                 // Import and initiate the component
                 const componentModule = await import(filepath);
                 const componentClass = componentModule.default;
-                const component: AbstractInstanceType<typeof Component> = new componentClass();
+                const component = new componentClass();
+
+                // Ensure the component is an instance of the Component class
+                if (!(component instanceof Component)) {
+                    continue;
+                }
 
                 // Cache the component
                 ComponentManager._cache.set(component.customId, component);
@@ -39,6 +45,8 @@ export default class ComponentManager {
                 Logger.log("GLOBAL", `Cached component "${component.customId}"`, {
                     color: AnsiColor.Purple
                 });
+
+                componentCount++;
             }
         } catch (_error) {
             const cause = ensureError(_error);
@@ -49,8 +57,7 @@ export default class ComponentManager {
             });
         }
 
-        const cacheSize = ComponentManager._cache.size;
-        Logger.info(`Cached ${cacheSize} ${pluralize(cacheSize, "component")}`);
+        Logger.info(`Cached ${componentCount} ${pluralize(componentCount, "component")}`);
     }
 
     static async handle(interaction: ComponentInteraction): Promise<void> {

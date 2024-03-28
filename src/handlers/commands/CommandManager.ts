@@ -1,6 +1,5 @@
 import { AutocompleteInteraction, Collection, CommandInteraction, Snowflake } from "discord.js";
 import { BaseError, ensureError, ErrorType } from "@/utils/errors";
-import { AbstractInstanceType } from "@/utils/types";
 import { pluralize } from "@/utils";
 import { client } from "@/index";
 
@@ -26,7 +25,9 @@ export default class CommandManager {
         }
 
         Logger.info("Caching commands...");
+
         const filenames = fs.readdirSync(dirpath);
+        let commandCount = 0;
 
         try {
             for (const filename of filenames) {
@@ -35,7 +36,13 @@ export default class CommandManager {
                 // Import and initiate the command
                 const commandModule = await import(filepath);
                 const commandClass = commandModule.default;
-                const command: AbstractInstanceType<typeof Command<CommandInteraction>> = new commandClass();
+                const command = new commandClass();
+
+                // Ensure the command is an instance of the Command class
+                if (!(command instanceof Command)) {
+                    continue;
+                }
+
                 const logMessage = `Cached command "${command.data.name}"`;
 
                 if (command.guildIds?.length) {
@@ -62,6 +69,8 @@ export default class CommandManager {
                         color: AnsiColor.Purple
                     });
                 }
+
+                commandCount++;
             }
         } catch (_error) {
             const cause = ensureError(_error);
@@ -72,7 +81,6 @@ export default class CommandManager {
             });
         }
 
-        const commandCount = filenames.length;
         Logger.info(`Cached ${commandCount} ${pluralize(commandCount, "command")}`);
     }
 

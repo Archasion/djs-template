@@ -1,5 +1,4 @@
 import { BaseError, ensureError, ErrorType } from "@/utils/errors";
-import { AbstractInstanceType } from "@/utils/types";
 import { pluralize } from "@/utils";
 import { client } from "@/index";
 
@@ -20,7 +19,9 @@ export default class EventListenerManager {
         }
 
         Logger.info("Mounting event listeners...");
+
         const filenames = fs.readdirSync(dirpath);
+        let eventListenerCount = 0;
 
         try {
             for (const filename of filenames) {
@@ -29,7 +30,13 @@ export default class EventListenerManager {
                 // Import and initiate the event listener
                 const listenerModule = await import(filepath);
                 const listenerClass = listenerModule.default;
-                const listener: AbstractInstanceType<typeof EventListener> = new listenerClass();
+                const listener = new listenerClass();
+
+                // Ensure the listener is an instance of the EventListener class
+                if (!(listener instanceof EventListener)) {
+                    continue;
+                }
+
                 const logMessage = `Mounted event listener "${listener.event}"`;
 
                 if (listener.options?.once) {
@@ -47,6 +54,8 @@ export default class EventListenerManager {
                         color: AnsiColor.Purple
                     });
                 }
+
+                eventListenerCount++;
             }
         } catch (_error) {
             const cause = ensureError(_error);
