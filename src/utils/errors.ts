@@ -36,7 +36,7 @@ export class InteractionExecuteError extends BaseError {
             interactionOptions = interaction.options.data
                 .map(option => ({
                     name: option.name,
-                    type: `[${option.type}] ${ApplicationCommandOptionType[option.type]}`,
+                    type: ApplicationCommandOptionType[option.type],
                     value: option.value
                 }));
         } else {
