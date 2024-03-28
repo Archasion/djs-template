@@ -1,9 +1,7 @@
 import { Client, Events } from "discord.js";
 
-import ComponentManager from "@/handlers/components/ComponentManager.ts";
-import CommandManager from "@/handlers/commands/CommandManager.ts";
-import EventListener from "@/handlers/events/EventListener.ts";
-import Logger, { AnsiColor } from "@/utils/logger.ts";
+import EventListener from "@/handlers/events/EventListener";
+import Logger, { AnsiColor } from "@/utils/logger";
 
 // noinspection JSUnusedGlobalSymbols
 export default class Ready extends EventListener {
@@ -18,9 +16,5 @@ export default class Ready extends EventListener {
             color: AnsiColor.Green,
             fullColor: true
         });
-
-        await ComponentManager.cache();
-        await CommandManager.cache();
-        await CommandManager.publish();
     }
 }

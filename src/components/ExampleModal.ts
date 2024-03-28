@@ -1,6 +1,6 @@
 import { Colors, EmbedBuilder, ModalSubmitInteraction } from "discord.js";
 
-import Component from "@/handlers/components/Component.ts";
+import Component from "@/handlers/components/Component";
 
 // noinspection JSUnusedGlobalSymbols
 export default class ExampleModal extends Component {

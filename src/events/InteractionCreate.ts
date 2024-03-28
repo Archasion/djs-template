@@ -1,9 +1,9 @@
-import { InteractionExecuteError, ensureError } from "@/utils/errors.ts";
+import { InteractionExecuteError, ensureError } from "@/utils/errors";
 import { Events, Interaction } from "discord.js";
 
-import ComponentManager from "@/handlers/components/ComponentManager.ts";
-import CommandManager from "@/handlers/commands/CommandManager.ts";
-import EventListener from "@/handlers/events/EventListener.ts";
+import ComponentManager from "@/handlers/components/ComponentManager";
+import CommandManager from "@/handlers/commands/CommandManager";
+import EventListener from "@/handlers/events/EventListener";
 
 // noinspection JSUnusedGlobalSymbols
 export default class InteractionCreate extends EventListener {

@@ -1,10 +1,10 @@
-import { BaseError, ensureError, ErrorType } from "@/utils/errors.ts";
-import { AbstractInstanceType } from "@/utils/types.ts";
+import { BaseError, ensureError, ErrorType } from "@/utils/errors";
+import { AbstractInstanceType } from "@/utils/types";
 import { pluralize } from "@/utils";
-import { client } from "@/index.ts";
+import { client } from "@/index";
 
-import EventListener from "./EventListener.ts";
-import Logger, { AnsiColor } from "@/utils/logger.ts";
+import EventListener from "./EventListener";
+import Logger, { AnsiColor } from "@/utils/logger";
 import path from "path";
 import fs from "fs";
 

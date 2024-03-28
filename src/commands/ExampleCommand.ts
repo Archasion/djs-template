@@ -10,7 +10,7 @@ import {
 import { suggestions } from "@data/examples/autocomplete.json";
 import { options } from "@data/examples/select-menu.json";
 
-import Command from "@/handlers/commands/Command.ts";
+import Command from "@/handlers/commands/Command";
 
 // noinspection JSUnusedGlobalSymbols
 export default class ExampleCommand extends Command<ChatInputCommandInteraction> {

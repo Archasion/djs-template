@@ -1,11 +1,11 @@
 import { AutocompleteInteraction, Collection, CommandInteraction, Snowflake } from "discord.js";
-import { BaseError, ensureError, ErrorType } from "@/utils/errors.ts";
-import { AbstractInstanceType } from "@/utils/types.ts";
+import { BaseError, ensureError, ErrorType } from "@/utils/errors";
+import { AbstractInstanceType } from "@/utils/types";
 import { pluralize } from "@/utils";
-import { client } from "@/index.ts";
+import { client } from "@/index";
 
-import Logger, { AnsiColor } from "@/utils/logger.ts";
-import Command from "./Command.ts";
+import Logger, { AnsiColor } from "@/utils/logger";
+import Command from "./Command";
 import path from "path";
 import fs from "fs";
 
