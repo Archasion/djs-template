@@ -8,13 +8,16 @@ if (!process.env.DISCORD_TOKEN) {
 }
 
 /** Discord client instance. */
-export const client = new Client({
+export const client: Client<true> = new Client({
     intents: DEFAULT_CLIENT_INTENTS,
     partials: DEFAULT_CLIENT_PARTIALS
 });
 
 // Load event listeners and login
 (async () => {
-    await EventListenerManager.mount();
     await client.login(process.env.DISCORD_TOKEN);
+    await EventListenerManager.mount();
+
+    // Emit the ready event again after mounting event listeners
+    client.emit("ready", client);
 })();

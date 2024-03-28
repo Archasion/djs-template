@@ -20,7 +20,11 @@ describe("exports", () => {
  */
 function verifyModule(dirname: string, expectedClass: Function): void {
     // Resolve the path to the module directory [src/{dirname}]
-    const moduleDirpath = path.resolve(__dirname, "../src", dirname);
+    const moduleDirpath = path.resolve("src", dirname);
+
+    // Skip if the directory does not exist
+    if (!fs.existsSync(moduleDirpath)) return;
+
     const moduleFiles = fs.readdirSync(moduleDirpath);
 
     test.each(moduleFiles)(`${dirname}: %s`, moduleFile => {

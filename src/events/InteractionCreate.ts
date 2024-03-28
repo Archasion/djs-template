@@ -14,7 +14,7 @@ export default class InteractionCreate extends EventListener {
     async execute(interaction: Interaction): Promise<void> {
         try {
             if (interaction.isCommand()) {
-                await CommandManager.handle(interaction);
+                await CommandManager.handleCommand(interaction);
                 return;
             }
 

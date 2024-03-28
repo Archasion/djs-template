@@ -18,7 +18,7 @@ export default class ExampleCommand extends Command<ChatInputCommandInteraction>
         super({
             name: "example",
             description: "Test all interactions",
-        });
+        }, []);
     }
 
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {

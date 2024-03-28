@@ -19,11 +19,8 @@ export default class Ready extends EventListener {
             fullColor: true
         });
 
-        await Promise.all([
-            ComponentManager.cache(),
-            CommandManager.cache()
-        ]);
-
+        await ComponentManager.cache();
+        await CommandManager.cache();
         await CommandManager.publish();
     }
 }

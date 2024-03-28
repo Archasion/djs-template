@@ -12,7 +12,8 @@ export enum AnsiColor {
     Green = "\x1b[32m",
     Cyan = "\x1b[36m",
     Grey = "\x1b[90m",
-    Red = "\x1b[31m"
+    Red = "\x1b[31m",
+    Purple = "\x1b[35m"
 }
 
 /** Utility class for logging messages. */

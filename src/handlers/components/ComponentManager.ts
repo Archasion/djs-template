@@ -3,7 +3,7 @@ import { AbstractInstanceType } from "@/utils/types.ts";
 import { pluralize } from "@/utils";
 
 import Component, { ComponentInteraction, CustomID } from "./Component.ts";
-import Logger from "@/utils/logger.ts";
+import Logger, { AnsiColor } from "@/utils/logger.ts";
 import path from "path";
 import fs from "fs";
 
@@ -14,8 +14,14 @@ export default class ComponentManager {
 
     /** Caches all components from the components directory. */
     static async cache(): Promise<void> {
-        // Resolve the path to the components directory [src/components]
-        const dirpath = path.resolve(__dirname, "../../components");
+        const dirpath = path.resolve("src/components");
+
+        if (!fs.existsSync(dirpath)) {
+            Logger.info("Skipping component caching: components directory not found");
+            return;
+        }
+
+        Logger.info("Caching components...");
         const filenames = fs.readdirSync(dirpath);
 
         try {
@@ -29,6 +35,10 @@ export default class ComponentManager {
 
                 // Cache the component
                 ComponentManager._cache.set(component.customId, component);
+
+                Logger.log("GLOBAL", `Cached component "${component.customId}"`, {
+                    color: AnsiColor.Purple
+                });
             }
         } catch (_error) {
             const cause = ensureError(_error);

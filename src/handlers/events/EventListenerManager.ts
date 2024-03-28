@@ -4,7 +4,7 @@ import { pluralize } from "@/utils";
 import { client } from "@/index.ts";
 
 import EventListener from "./EventListener.ts";
-import Logger from "@/utils/logger.ts";
+import Logger, { AnsiColor } from "@/utils/logger.ts";
 import path from "path";
 import fs from "fs";
 
@@ -12,8 +12,14 @@ import fs from "fs";
 export default class EventListenerManager {
     /** Mounts all event listeners from the events directory. */
     static async mount(): Promise<void> {
-        // Resolve the path to the events directory [src/events]
-        const dirpath = path.resolve(__dirname, "../../events");
+        const dirpath = path.resolve("src/events");
+
+        if (!fs.existsSync(dirpath)) {
+            Logger.info("Skipping event mounting: events directory not found");
+            return;
+        }
+
+        Logger.info("Mounting event listeners...");
         const filenames = fs.readdirSync(dirpath);
 
         try {
@@ -24,13 +30,22 @@ export default class EventListenerManager {
                 const listenerModule = await import(filepath);
                 const listenerClass = listenerModule.default;
                 const listener: AbstractInstanceType<typeof EventListener> = new listenerClass();
+                const logMessage = `Mounted event listener "${listener.event}"`;
 
                 if (listener.options?.once) {
                     // Handle the event once per session
                     client.once(listener.event, (...args) => listener.execute(...args));
+
+                    Logger.log("ONCE", logMessage, {
+                        color: AnsiColor.Purple
+                    });
                 } else {
                     // Handle the event every time it is emitted
                     client.on(listener.event, (...args) => listener.execute(...args));
+
+                    Logger.log("ON", logMessage, {
+                        color: AnsiColor.Purple
+                    });
                 }
             }
         } catch (_error) {
@@ -42,6 +57,6 @@ export default class EventListenerManager {
             });
         }
 
-        Logger.info(`Loaded ${filenames.length} ${pluralize(filenames.length, "event listener")}`);
+        Logger.info(`Mounted ${filenames.length} ${pluralize(filenames.length, "event listener")}`);
     }
 }
