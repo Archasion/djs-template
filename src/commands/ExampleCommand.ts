@@ -1,5 +1,6 @@
 import {
     ActionRowBuilder,
+    ApplicationCommandOptionType,
     AutocompleteInteraction,
     ButtonBuilder,
     ButtonStyle,
@@ -18,6 +19,12 @@ export default class ExampleCommand extends Command<ChatInputCommandInteraction>
         super({
             name: "example",
             description: "Test all interactions",
+            options: [{
+                name: "autocomplete",
+                description: "Test the autocomplete interaction",
+                type: ApplicationCommandOptionType.String,
+                autocomplete: true
+            }]
         }, []);
     }
 
