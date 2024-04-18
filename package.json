@@ -1,6 +1,6 @@
 {
   "name": "djs-template",
-  "description": "A template for a discord.js bot using bun and TypeScript.",
+  "description": "Template for a discord.js app using bun and TypeScript.",
   "homepage": "https://github.com/archasion/djs-template#readme",
   "version": "1.0.0",
   "type": "module",
