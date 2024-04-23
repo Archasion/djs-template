@@ -8,6 +8,9 @@ export const DEFAULT_DM_PERMISSION: boolean = false;
 
 /** The default intents for the Discord client. */
 export const DEFAULT_CLIENT_INTENTS: readonly GatewayIntentBits[] = [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.GuildMembers
 ];
 
