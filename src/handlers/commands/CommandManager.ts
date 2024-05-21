@@ -84,13 +84,33 @@ export default class CommandManager {
         Logger.info(`Cached ${commandCount} ${pluralize(commandCount, "command")}`);
     }
 
-    /** Publish all cached commands to Discord. */
-    static async publish(): Promise<void> {
-        Logger.info("Publishing commands...");
+    /** Publish all cached global commands to Discord. */
+    static async publishGlobalCommands(): Promise<void> {
+        Logger.info("Publishing global commands...");
 
-        const logMessage = (commandCount: number) => `Published ${commandCount} ${pluralize(commandCount, "command")}`;
+        // Retrieve all cached global commands and build them
+        const globalCommands = CommandManager._globalCommands.map(command => command.build());
 
-        // Publish guild commands
+        // No commands to publish
+        if (!globalCommands.length) return;
+
+        const publishedCommands = await client.application.commands.set(globalCommands);
+
+        if (!publishedCommands) {
+            throw new BaseError("Failed to publish global commands", {
+                name: ErrorType.CommandPublishError
+            });
+        }
+
+        Logger.log("GLOBAL", `Published ${publishedCommands.size} ${pluralize(publishedCommands.size, "command")}`, {
+            color: AnsiColor.Purple
+        });
+
+        Logger.info("Finished publishing global commands");
+    }
+
+    /** Publish all cached guild commands to Discord. */
+    static async publishGuildCommands(): Promise<void> {
         for (const [guildId, guildCommands] of CommandManager._guildCommands) {
             const guild = await client.guilds.fetch(guildId).catch(cause => {
                 throw new BaseError(`Failed to fetch guild while publishing commands [ID: ${guildId}]`, {
@@ -109,31 +129,10 @@ export default class CommandManager {
                 });
             }
 
-            Logger.log(`GUILD: ${guildId}`, logMessage(publishedCommands.size), {
+            Logger.log(`GUILD: ${guildId}`, `Published ${publishedCommands.size} ${pluralize(publishedCommands.size, "command")}`, {
                 color: AnsiColor.Purple
             });
         }
-
-        // Publish global commands
-        // Retrieve all cached global commands and build them
-        const globalCommands = CommandManager._globalCommands.map(command => command.build());
-
-        // No commands to publish
-        if (!globalCommands.length) return;
-
-        const publishedCommands = await client.application.commands.set(globalCommands);
-
-        if (!publishedCommands) {
-            throw new BaseError("Failed to publish global commands", {
-                name: ErrorType.CommandPublishError
-            });
-        }
-
-        Logger.log("GLOBAL", logMessage(publishedCommands.size), {
-            color: AnsiColor.Purple
-        });
-
-        Logger.info("Finished publishing commands");
     }
 
     /** Handles a command interaction. */

@@ -30,7 +30,7 @@ export default class Logger {
      */
     static log(level: string, message: string, options?: ColorOptions): void {
         const timestamp = new Date().toISOString();
-        const formattedTimestamp = `${AnsiColor.Grey}[${timestamp}]${AnsiColor.Reset}`;
+        const formattedTimestamp = Logger._color(`[${timestamp}]`, AnsiColor.Grey);
 
         // Default output if no color is specified.
         if (!options?.color) {
@@ -39,12 +39,13 @@ export default class Logger {
         }
 
         if (options.fullColor) {
-            // Color the entire log.
-            console.log(`${formattedTimestamp} ${options.color}[${level}] ${message}${AnsiColor.Reset}`);
+            message = Logger._color(`[${level}] ${message}`, options.color);
         } else {
-            // Only color the tag.
-            console.log(`${formattedTimestamp} ${options.color}[${level}]${AnsiColor.Reset} ${message}`);
+            const coloredLevel = Logger._color(`[${level}]`, options.color);
+            message = `${coloredLevel} ${message}`;
         }
+
+        console.log(`${formattedTimestamp} ${message}`);
     }
 
     /** Uses {@link Logger#log} with a cyan `[INFO]` tag */
@@ -59,5 +60,17 @@ export default class Logger {
         Logger.log("ERROR", message, {
             color: AnsiColor.Red
         });
+    }
+
+    /**
+     * Applies color to a message.
+     *
+     * @param message The message to color.
+     * @param color The color to apply.
+     * @returns The colored message.
+     * @private
+     */
+    private static _color(message: string, color: AnsiColor): string {
+        return `${color}${message}${AnsiColor.Reset}`;
     }
 }

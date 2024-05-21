@@ -3,7 +3,7 @@ import { ApplicationCommandOptionType, Interaction, Snowflake } from "discord.js
 export enum ErrorType {
     /** Represents an unknown or unsupported error. */
     UnknownError = "UnknownError",
-    /** Represents an error that occurred while trying to publish commands using {@link CommandManager#publish}. */
+    /** Represents an error that occurred while trying to publish commands using {@link CommandManager#publishGlobalCommands}. */
     CommandPublishError = "CommandPublishError",
     /** Represents an error that occurred while trying to cache commands using {@link CommandManager#cache}. */
     CommandCachingError = "CommandCachingError",
