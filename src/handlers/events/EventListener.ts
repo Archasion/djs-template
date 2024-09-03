@@ -5,7 +5,7 @@ export default abstract class EventListener {
     /**
      * @param event The event to handle.
      * @param options The options for the event.
-     * @param options.once Whether the event should only be handled once.
+     * @param options.once Whether the event should only be handled once per session.
      * @protected
      */
     protected constructor(public event: Extract<Events, keyof ClientEvents>, public options?: { once: boolean }) {

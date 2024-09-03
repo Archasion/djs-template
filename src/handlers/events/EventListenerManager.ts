@@ -6,22 +6,21 @@ import EventListener from "./EventListener";
 import Logger, { AnsiColor } from "@/utils/logger";
 import path from "path";
 import fs from "fs";
+import * as assert from "node:assert";
 
 /** Utility class for handling event listeners. */
 export default class EventListenerManager {
-    /** Mounts all event listeners from the events directory. */
+    /** Mounts all event listeners from the src/events path. */
     static async mount(): Promise<void> {
         const dirpath = path.resolve("src/events");
 
         if (!fs.existsSync(dirpath)) {
-            Logger.info("Skipping event mounting: events directory not found");
+            Logger.warn("Skipping event mounting, path 'src/events' not found");
             return;
         }
 
         Logger.info("Mounting event listeners...");
-
         const filenames = fs.readdirSync(dirpath);
-        let eventListenerCount = 0;
 
         try {
             for (const filename of filenames) {
@@ -33,9 +32,7 @@ export default class EventListenerManager {
                 const listener = new listenerClass();
 
                 // Ensure the listener is an instance of the EventListener class
-                if (!(listener instanceof EventListener)) {
-                    continue;
-                }
+                assert(listener instanceof EventListener, `Expected default export of EventListener in ${filepath}`);
 
                 const logMessage = `Mounted event listener "${listener.event}"`;
 
@@ -54,10 +51,8 @@ export default class EventListenerManager {
                         color: AnsiColor.Purple
                     });
                 }
-
-                eventListenerCount++;
             }
-        } catch (_error) {
+        } catch (_error: unknown) {
             const cause = ensureError(_error);
 
             throw new BaseError("Failed to mount event listeners", {

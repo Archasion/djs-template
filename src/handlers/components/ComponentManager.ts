@@ -5,6 +5,7 @@ import Component, { ComponentInteraction, CustomID } from "./Component";
 import Logger, { AnsiColor } from "@/utils/logger";
 import path from "path";
 import fs from "fs";
+import * as assert from "node:assert";
 
 /** Utility class for handling component interactions. */
 export default class ComponentManager {
@@ -16,14 +17,12 @@ export default class ComponentManager {
         const dirpath = path.resolve("src/components");
 
         if (!fs.existsSync(dirpath)) {
-            Logger.info("Skipping component caching: components directory not found");
+            Logger.warn("Skipping component caching, path src/components not found");
             return;
         }
 
         Logger.info("Caching components...");
-
         const filenames = fs.readdirSync(dirpath);
-        let componentCount = 0;
 
         try {
             for (const filename of filenames) {
@@ -35,9 +34,7 @@ export default class ComponentManager {
                 const component = new componentClass();
 
                 // Ensure the component is an instance of the Component class
-                if (!(component instanceof Component)) {
-                    continue;
-                }
+                assert(component instanceof Component, `Expected default export of Component in ${filepath}`);
 
                 // Cache the component
                 ComponentManager._cache.set(component.customId, component);
@@ -45,10 +42,8 @@ export default class ComponentManager {
                 Logger.log("GLOBAL", `Cached component "${component.customId}"`, {
                     color: AnsiColor.Purple
                 });
-
-                componentCount++;
             }
-        } catch (_error) {
+        } catch (_error: unknown) {
             const cause = ensureError(_error);
 
             throw new BaseError("Failed to cache components", {
@@ -57,7 +52,7 @@ export default class ComponentManager {
             });
         }
 
-        Logger.info(`Cached ${componentCount} ${pluralize(componentCount, "component")}`);
+        Logger.info(`Cached ${filenames.length} ${pluralize(filenames.length, "component")}`);
     }
 
     static async handle(interaction: ComponentInteraction): Promise<void> {

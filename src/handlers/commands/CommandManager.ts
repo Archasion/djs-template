@@ -7,6 +7,7 @@ import Logger, { AnsiColor } from "@/utils/logger";
 import Command from "./Command";
 import path from "path";
 import fs from "fs";
+import * as assert from "node:assert";
 
 /** Utility class for handling command interactions. */
 export default class CommandManager {
@@ -20,14 +21,15 @@ export default class CommandManager {
         const dirpath = path.resolve("src/commands");
 
         if (!fs.existsSync(dirpath)) {
-            Logger.info("Skipping command caching: commands directory not found");
+            Logger.info("Skipping command caching, path src/commands not found");
             return;
         }
 
         Logger.info("Caching commands...");
-
         const filenames = fs.readdirSync(dirpath);
-        let commandCount = 0;
+
+        let globalCommandCount = 0;
+        let guildCommandCount = 0;
 
         try {
             for (const filename of filenames) {
@@ -39,12 +41,11 @@ export default class CommandManager {
                 const command = new commandClass();
 
                 // Ensure the command is an instance of the Command class
-                if (!(command instanceof Command)) {
-                    continue;
-                }
-
+                assert(command instanceof Command, `Expected default export of Command in ${filepath}`);
                 const logMessage = `Cached command "${command.data.name}"`;
 
+                // Publish the command globally if guildIds is not defined
+                // Otherwise, publish the command to the specified guilds
                 if (command.guildIds?.length) {
                     for (const guildId of command.guildIds) {
                         let guildCommands = CommandManager._guildCommands.get(guildId);
@@ -62,17 +63,19 @@ export default class CommandManager {
                             color: AnsiColor.Purple
                         });
                     }
+
+                    guildCommandCount++;
                 } else {
                     CommandManager._globalCommands.set(command.data.name, command);
 
                     Logger.log("GLOBAL", logMessage, {
                         color: AnsiColor.Purple
                     });
-                }
 
-                commandCount++;
+                    globalCommandCount++;
+                }
             }
-        } catch (_error) {
+        } catch (_error: unknown) {
             const cause = ensureError(_error);
 
             throw new BaseError("Failed to cache commands", {
@@ -81,7 +84,7 @@ export default class CommandManager {
             });
         }
 
-        Logger.info(`Cached ${commandCount} ${pluralize(commandCount, "command")}`);
+        Logger.info(`Cached ${globalCommandCount} ${pluralize(globalCommandCount, "command")} (${globalCommandCount} global, ${guildCommandCount} guild)`);
     }
 
     /** Publish all cached global commands to Discord. */
@@ -96,17 +99,9 @@ export default class CommandManager {
 
         const publishedCommands = await client.application.commands.set(globalCommands);
 
-        if (!publishedCommands) {
-            throw new BaseError("Failed to publish global commands", {
-                name: ErrorType.CommandPublishError
-            });
-        }
-
         Logger.log("GLOBAL", `Published ${publishedCommands.size} ${pluralize(publishedCommands.size, "command")}`, {
             color: AnsiColor.Purple
         });
-
-        Logger.info("Finished publishing global commands");
     }
 
     /** Publish all cached guild commands to Discord. */
@@ -122,12 +117,6 @@ export default class CommandManager {
             // Retrieve all cached guild commands and build them
             const commands = guildCommands.map(command => command.build());
             const publishedCommands = await guild.commands.set(commands);
-
-            if (!publishedCommands) {
-                throw new BaseError(`Failed to publish guild commands [ID: ${guildId}]`, {
-                    name: ErrorType.CommandPublishError
-                });
-            }
 
             Logger.log(`GUILD: ${guildId}`, `Published ${publishedCommands.size} ${pluralize(publishedCommands.size, "command")}`, {
                 color: AnsiColor.Purple

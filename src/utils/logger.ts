@@ -13,7 +13,8 @@ export enum AnsiColor {
     Cyan = "\x1b[36m",
     Grey = "\x1b[90m",
     Red = "\x1b[31m",
-    Purple = "\x1b[35m"
+    Purple = "\x1b[35m",
+    Orange = "\x1b[33m"
 }
 
 /** Utility class for logging messages. */
@@ -52,6 +53,13 @@ export default class Logger {
     static info(message: string): void {
         Logger.log("INFO", message, {
             color: AnsiColor.Cyan
+        });
+    }
+
+    /** Uses {@link Logger#log} with an orange `[WARN]` tag */
+    static warn(message: string): void {
+        Logger.log("WARN", message, {
+            color: AnsiColor.Orange
         });
     }
 
