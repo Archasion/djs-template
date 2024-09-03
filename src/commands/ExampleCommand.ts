@@ -51,7 +51,7 @@ export default class ExampleCommand extends Command<ChatInputCommandInteraction>
         });
     }
 
-    async autocomplete(interaction: AutocompleteInteraction): Promise<void> {
+    override async autocomplete(interaction: AutocompleteInteraction): Promise<void> {
         // Get the input as it is being typed
         const query = interaction.options.getFocused();
         const filteredSuggestions: string[] = suggestions.filter((suggestion: string) => {
