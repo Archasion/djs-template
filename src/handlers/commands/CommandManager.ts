@@ -128,7 +128,7 @@ export default class CommandManager {
 
     /** Handles a command interaction. */
     static async handleCommand(interaction: CommandInteraction): Promise<void> {
-        const command = await CommandManager._get(
+        const command = CommandManager._get(
             interaction.commandId,
             interaction.commandName,
             interaction.guildId
@@ -143,7 +143,7 @@ export default class CommandManager {
 
     /** Handles an autocomplete interaction. */
     static async handleAutocomplete(interaction: AutocompleteInteraction): Promise<void> {
-        const command = await CommandManager._get(
+        const command = CommandManager._get(
             interaction.commandId,
             interaction.commandName,
             interaction.guildId
@@ -169,11 +169,11 @@ export default class CommandManager {
      * @param guildId The source guild's ID.
      * @private
      */
-    private static async _get(
+    private static _get(
         commandId: Snowflake,
         commandName: string,
         guildId: Snowflake | null
-    ): Promise<Command<CommandInteraction> | undefined> {
+    ): Command<CommandInteraction> | undefined {
         // application.commands only contains global commands
         const isGlobalCommand = client.application.commands.cache.has(commandId);
 
