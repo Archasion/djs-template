@@ -32,7 +32,7 @@ export default class EventListenerManager {
                 const listener = new listenerClass();
 
                 // Ensure the listener is an instance of the EventListener class
-                assert(listener instanceof EventListener, `Expected default export of EventListener in ${filepath}`);
+                assert.ok(listener instanceof EventListener, `Expected default export of EventListener in ${filepath}`);
 
                 const logMessage = `Mounted event listener "${listener.event}"`;
 

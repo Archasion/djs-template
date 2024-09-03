@@ -41,7 +41,7 @@ export default class CommandManager {
                 const command = new commandClass();
 
                 // Ensure the command is an instance of the Command class
-                assert(command instanceof Command, `Expected default export of Command in ${filepath}`);
+                assert.ok(command instanceof Command, `Expected default export of Command in ${filepath}`);
                 const logMessage = `Cached command "${command.data.name}"`;
 
                 // Publish the command globally if guildIds is not defined

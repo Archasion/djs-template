@@ -34,7 +34,7 @@ export default class ComponentManager {
                 const component = new componentClass();
 
                 // Ensure the component is an instance of the Component class
-                assert(component instanceof Component, `Expected default export of Component in ${filepath}`);
+                assert.ok(component instanceof Component, `Expected default export of Component in ${filepath}`);
 
                 // Cache the component
                 ComponentManager._cache.set(component.customId, component);
