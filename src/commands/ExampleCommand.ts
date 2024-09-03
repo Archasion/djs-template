@@ -54,9 +54,11 @@ export default class ExampleCommand extends Command<ChatInputCommandInteraction>
     async autocomplete(interaction: AutocompleteInteraction): Promise<void> {
         // Get the input as it is being typed
         const query = interaction.options.getFocused();
-        const queriedSuggestions: string[] = suggestions.filter((suggestion: string) => suggestion.startsWith(query));
+        const filteredSuggestions: string[] = suggestions.filter((suggestion: string) => {
+            return suggestion.startsWith(query);
+        });
 
-        const options = queriedSuggestions.map(suggestion => {
+        const mappedSuggestions = filteredSuggestions.map(suggestion => {
             const id = suggestion
                 .split(" ")
                 .join("-")
@@ -65,6 +67,6 @@ export default class ExampleCommand extends Command<ChatInputCommandInteraction>
             return { name: suggestion, value: id };
         });
 
-        await interaction.respond(options);
+        await interaction.respond(mappedSuggestions);
     }
 }
