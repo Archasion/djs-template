@@ -1,5 +1,5 @@
 import { ApplicationCommandData, AutocompleteInteraction, CommandInteraction, Snowflake } from "discord.js";
-import { DEFAULT_COMMAND_PERMISSIONS, DEFAULT_DM_PERMISSION } from "@/utils/constants";
+import { DEFAULT_COMMAND_PERMISSIONS, DEFAULT_COMMAND_CONTEXTS } from "@/utils/constants";
 
 /** The base class for all commands. */
 export default abstract class Command<T extends CommandInteraction> {
@@ -25,7 +25,7 @@ export default abstract class Command<T extends CommandInteraction> {
     build(): ApplicationCommandData {
         return {
             defaultMemberPermissions: DEFAULT_COMMAND_PERMISSIONS,
-            dmPermission: DEFAULT_DM_PERMISSION,
+            contexts: DEFAULT_COMMAND_CONTEXTS,
             ...this.data
         };
     }

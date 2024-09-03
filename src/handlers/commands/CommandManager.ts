@@ -107,12 +107,14 @@ export default class CommandManager {
     /** Publish all cached guild commands to Discord. */
     static async publishGuildCommands(): Promise<void> {
         for (const [guildId, guildCommands] of CommandManager._guildCommands) {
-            const guild = await client.guilds.fetch(guildId).catch(cause => {
-                throw new BaseError(`Failed to fetch guild while publishing commands [ID: ${guildId}]`, {
-                    name: ErrorType.CommandPublishError,
-                    cause
+            // All guilds are cached when the Guilds intent is passed to the client
+            const guild = client.guilds.cache.get(guildId);
+
+            if (!guild) {
+                throw new BaseError(`Failed to publish commands to guild, unknown guild ID: ${guildId}`, {
+                    name: ErrorType.CommandPublishError
                 });
-            });
+            }
 
             // Retrieve all cached guild commands and build them
             const commands = guildCommands.map(command => command.build());

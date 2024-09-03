@@ -1,4 +1,4 @@
-import { DEFAULT_CLIENT_INTENTS, DEFAULT_CLIENT_PARTIALS } from "./utils/constants";
+import { CLIENT_INTENTS, CLIENT_PARTIALS } from "./utils/constants";
 import { Client } from "discord.js";
 
 import EventListenerManager from "./handlers/events/EventListenerManager";
@@ -13,8 +13,8 @@ if (!process.env.DISCORD_TOKEN) {
 
 /** Discord client instance. */
 export const client: Client<true> = new Client({
-    intents: DEFAULT_CLIENT_INTENTS,
-    partials: DEFAULT_CLIENT_PARTIALS
+    intents: CLIENT_INTENTS,
+    partials: CLIENT_PARTIALS
 });
 
 // Load event listeners and login
