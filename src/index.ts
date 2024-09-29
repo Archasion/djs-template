@@ -1,5 +1,4 @@
-import { CLIENT_INTENTS, CLIENT_PARTIALS } from "./utils/constants";
-import { Client } from "discord.js";
+import { Client, GatewayIntentBits } from "discord.js";
 
 import EventListenerManager from "./handlers/events/EventListenerManager";
 import ComponentManager from "@/handlers/components/ComponentManager";
@@ -13,8 +12,8 @@ if (!process.env.DISCORD_TOKEN) {
 
 /** Discord client instance. */
 export const client: Client<true> = new Client({
-    intents: CLIENT_INTENTS,
-    partials: CLIENT_PARTIALS
+    intents: [GatewayIntentBits.Guilds],
+    partials: []
 });
 
 // Load event listeners and login
