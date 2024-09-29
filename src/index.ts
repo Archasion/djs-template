@@ -18,15 +18,19 @@ export const client: Client<true> = new Client({
 
 // Load event listeners and login
 async function main(): Promise<void> {
-    await ComponentManager.cache();
-    await CommandManager.cache();
+    await Promise.all([
+        ComponentManager.cache(),
+        CommandManager.cache()
+    ]);
 
     await client.login(process.env.DISCORD_TOKEN);
 
     // The client must be logged in for the subsequent operations to work
-    await CommandManager.publishGlobalCommands();
-    await CommandManager.publishGuildCommands();
-    await EventListenerManager.mount();
+    await Promise.all([
+        CommandManager.publishGlobalCommands(),
+        CommandManager.publishGuildCommands(),
+        EventListenerManager.mount()
+    ]);
 
     // Emit the ready event again after mounting event listeners
     client.emit("ready", client);
