@@ -5,11 +5,6 @@ import ComponentManager from "@/handlers/components/ComponentManager";
 import CommandManager from "@/handlers/commands/CommandManager";
 import Logger from "@/utils/logger";
 
-if (!process.env.DISCORD_TOKEN) {
-    Logger.error("DISCORD_TOKEN environment variable is not set.");
-    process.exit(1);
-}
-
 /** Discord client instance. */
 export const client: Client<true> = new Client({
     intents: [GatewayIntentBits.Guilds],
@@ -18,6 +13,11 @@ export const client: Client<true> = new Client({
 
 // Load event listeners and login
 async function main(): Promise<void> {
+    if (!process.env.DISCORD_TOKEN) {
+        Logger.error("DISCORD_TOKEN environment variable is not set.");
+        process.exit(1);
+    }
+
     await Promise.all([
         ComponentManager.cache(),
         CommandManager.cache()
@@ -36,8 +36,10 @@ async function main(): Promise<void> {
     client.emit("ready", client);
 }
 
-main()
-    .catch(error => {
-        Logger.error(`An error occurred during startup: ${error}`);
-        process.exit(1);
-    });
+if (process.env.NODE_ENV !== "test") {
+    main()
+        .catch(error => {
+            Logger.error(`An error occurred during startup: ${error}`);
+            process.exit(1);
+        });
+}
