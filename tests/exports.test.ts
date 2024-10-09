@@ -2,7 +2,7 @@ import { expect, test, describe } from "bun:test";
 
 import EventListener from "@/handlers/events/EventListener";
 import Component from "@/handlers/components/Component";
-import Command from "../src/handlers/commands/Command";
+import Command from "@/handlers/commands/Command";
 import path from "path";
 import fs from "fs";
 
