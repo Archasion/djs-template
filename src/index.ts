@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, GatewayIntentBits, Options } from "discord.js";
 
 import EventListenerManager from "./handlers/events/EventListenerManager";
 import ComponentManager from "@/handlers/components/ComponentManager";
@@ -8,7 +8,9 @@ import Logger from "@/utils/logger";
 /** Discord client instance. */
 export const client: Client<true> = new Client({
     intents: [GatewayIntentBits.Guilds],
-    partials: []
+    partials: [],
+    // Disable optional caching
+    makeCache: Options.cacheWithLimits({})
 });
 
 // Load event listeners and login
