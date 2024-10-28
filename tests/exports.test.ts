@@ -1,5 +1,4 @@
-import { expect, test, describe } from "bun:test";
-
+import { describe, expect, test } from "bun:test";
 import EventListener from "@/handlers/events/EventListener";
 import Component from "@/handlers/components/Component";
 import Command from "@/handlers/commands/Command";
@@ -7,9 +6,9 @@ import path from "path";
 import fs from "fs";
 
 describe("exports", () => {
-    verifyModule("components", Component);
-    verifyModule("commands", Command);
-    verifyModule("events", EventListener);
+	verifyModule("components", Component);
+	verifyModule("commands", Command);
+	verifyModule("events", EventListener);
 });
 
 /**
@@ -19,18 +18,18 @@ describe("exports", () => {
  * @param expectedClass The expected class.
  */
 function verifyModule(dirname: string, expectedClass: Function): void {
-    // Resolve the path to the module directory [src/{dirname}]
-    const moduleDirpath = path.resolve("src", dirname);
+	// Resolve the path to the module directory [src/{dirname}]
+	const moduleDirpath = path.resolve("src", dirname);
 
-    // Skip if the directory does not exist
-    if (!fs.existsSync(moduleDirpath)) return;
+	// Skip if the directory does not exist
+	if (!fs.existsSync(moduleDirpath)) return;
 
-    const moduleFiles = fs.readdirSync(moduleDirpath);
+	const moduleFiles = fs.readdirSync(moduleDirpath);
 
-    test.each(moduleFiles)(`${dirname}: %s`, moduleFile => {
-        const moduleFilepath = path.resolve(moduleDirpath, moduleFile);
-        const module = require(moduleFilepath).default;
+	test.each(moduleFiles)(`${dirname}: %s`, moduleFile => {
+		const moduleFilepath = path.resolve(moduleDirpath, moduleFile);
+		const module = require(moduleFilepath).default;
 
-        expect(Object.getPrototypeOf(module)).toStrictEqual(expectedClass);
-    });
+		expect(Object.getPrototypeOf(module)).toStrictEqual(expectedClass);
+	});
 }

@@ -16,7 +16,8 @@
 	"forceConsistentCasingInFileNames": true,
 	"paths": {
 	  "@/*": ["src/*"],
-	  "@data/*": ["data/*"]
+	  "@data/*": ["data/*"],
+	  "@handlers/*": ["src/handlers/*"]
 	}
   },
   "include": [

@@ -5,10 +5,10 @@ export const DEFAULT_COMMAND_PERMISSIONS: readonly bigint[] = [PermissionFlagsBi
 
 /** The default contexts in which the commands can be used. */
 export const DEFAULT_COMMAND_CONTEXTS: readonly InteractionContextType[] = [
-    InteractionContextType.Guild
+	InteractionContextType.Guild
 ];
 
 /** The default contexts in which commands are installed */
 export const DEFAULT_INTEGRATION_TYPES: readonly ApplicationIntegrationType[] = [
-    ApplicationIntegrationType.GuildInstall
+	ApplicationIntegrationType.GuildInstall
 ];

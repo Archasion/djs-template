@@ -1,15 +1,14 @@
-import { StringSelectMenuInteraction } from "discord.js";
-
+import type { StringSelectMenuInteraction } from "discord.js";
 import Component from "@/handlers/components/Component";
 
 // noinspection JSUnusedGlobalSymbols
 export default class ExampleSelectMenu extends Component {
-    constructor() {
-        super("example-select-menu");
-    }
+	constructor() {
+		super("example-select-menu");
+	}
 
-    async execute(interaction: StringSelectMenuInteraction): Promise<void> {
-        const [selected] = interaction.values;
-        await interaction.reply(selected);
-    }
+	async execute(interaction: StringSelectMenuInteraction): Promise<void> {
+		const [selected] = interaction.values;
+		await interaction.reply(selected);
+	}
 }
