@@ -12,9 +12,9 @@ import * as assert from "node:assert";
 /** Utility class for handling command interactions. */
 export default class CommandManager {
 	/** Cached global commands mapped by their names. */
-	private static _globalCommands = new Collection<string, Command<CommandInteraction>>();
+	private static readonly _globalCommands = new Collection<string, Command<CommandInteraction>>();
 	/** Cached guild commands mapped by their guild's ID. */
-	private static _guildCommands = new Collection<Snowflake, Collection<string, Command<CommandInteraction>>>();
+	private static readonly _guildCommands = new Collection<Snowflake, Collection<string, Command<CommandInteraction>>>();
 
 	/** Caches all commands from the commands directory. */
 	static async cache(): Promise<void> {
@@ -51,6 +51,7 @@ export default class CommandManager {
 						let guildCommands = CommandManager._guildCommands.get(guildId);
 
 						// Initialize the guild's command collection if it doesn't exist
+						// eslint-disable-next-line max-depth
 						if (!guildCommands) {
 							guildCommands = new Collection<string, Command<CommandInteraction>>();
 							CommandManager._guildCommands.set(guildId, guildCommands);
@@ -174,7 +175,7 @@ export default class CommandManager {
 		commandName: string,
 		guildId: Snowflake | null
 	): Command<CommandInteraction> | undefined {
-		// application.commands only contains global commands
+		// Application.commands only contains global commands
 		const isGlobalCommand = client.application.commands.cache.has(commandId);
 
 		if (isGlobalCommand) {

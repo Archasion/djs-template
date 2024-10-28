@@ -3,7 +3,7 @@ import { Events } from "discord.js";
 import EventListener from "@/handlers/events/EventListener";
 import Logger, { AnsiColor } from "@/utils/logger";
 
-// noinspection JSUnusedGlobalSymbols
+// Noinspection JSUnusedGlobalSymbols
 export default class Ready extends EventListener {
 	constructor() {
 		super(Events.ClientReady, {
@@ -11,7 +11,7 @@ export default class Ready extends EventListener {
 		});
 	}
 
-	async execute(client: Client<true>): Promise<void> {
+	execute(client: Client<true>): void {
 		Logger.log("READY", `Successfully logged in as ${client.user.tag}`, {
 			color: AnsiColor.Green,
 			fullColor: true

@@ -2,7 +2,7 @@ import type { ButtonInteraction } from "discord.js";
 import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import Component from "@/handlers/components/Component";
 
-// noinspection JSUnusedGlobalSymbols
+// Noinspection JSUnusedGlobalSymbols
 export default class ExampleButton extends Component {
 	constructor() {
 		super("example-button");

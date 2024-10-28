@@ -2,7 +2,7 @@ import type { ModalSubmitInteraction } from "discord.js";
 import { Colors, EmbedBuilder } from "discord.js";
 import Component from "@/handlers/components/Component";
 
-// noinspection JSUnusedGlobalSymbols
+// Noinspection JSUnusedGlobalSymbols
 export default class ExampleModal extends Component {
 	constructor() {
 		super("example-modal");

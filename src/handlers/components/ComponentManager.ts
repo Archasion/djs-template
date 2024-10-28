@@ -10,7 +10,7 @@ import * as assert from "node:assert";
 /** Utility class for handling component interactions. */
 export default class ComponentManager {
 	/** Cached components mapped by their custom IDs. */
-	private static _cache = new Map<CustomID, Component>;
+	private static readonly _cache = new Map<CustomID, Component>;
 
 	/** Caches all components from the components directory. */
 	static async cache(): Promise<void> {

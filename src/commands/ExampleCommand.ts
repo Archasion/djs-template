@@ -11,7 +11,7 @@ import { suggestions } from "@data/examples/autocomplete.json";
 import { options } from "@data/examples/select-menu.json";
 import Command from "@/handlers/commands/Command";
 
-// noinspection JSUnusedGlobalSymbols
+// Noinspection JSUnusedGlobalSymbols
 export default class ExampleCommand extends Command<ChatInputCommandInteraction> {
 	constructor() {
 		super({

@@ -5,7 +5,7 @@ import ComponentManager from "@/handlers/components/ComponentManager";
 import CommandManager from "@/handlers/commands/CommandManager";
 import EventListener from "@/handlers/events/EventListener";
 
-// noinspection JSUnusedGlobalSymbols
+// Noinspection JSUnusedGlobalSymbols
 export default class InteractionCreate extends EventListener {
 	constructor() {
 		super(Events.InteractionCreate);
@@ -25,7 +25,6 @@ export default class InteractionCreate extends EventListener {
 
 			if (interaction.isAutocomplete()) {
 				await CommandManager.handleAutocomplete(interaction);
-				return;
 			}
 		} catch (_error: unknown) {
 			const cause = ensureError(_error);

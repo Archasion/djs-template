@@ -26,10 +26,11 @@ function verifyModule(dirname: string, expectedClass: Function): void {
 
 	const moduleFiles = fs.readdirSync(moduleDirpath);
 
-	test.each(moduleFiles)(`${dirname}: %s`, moduleFile => {
+	test.each(moduleFiles)(`${dirname}: %s`, async moduleFile => {
 		const moduleFilepath = path.resolve(moduleDirpath, moduleFile);
-		const module = require(moduleFilepath).default;
+		const module = await import(moduleFilepath);
+		const defaultExport = module.default;
 
-		expect(Object.getPrototypeOf(module)).toStrictEqual(expectedClass);
+		expect(Object.getPrototypeOf(defaultExport)).toStrictEqual(expectedClass);
 	});
 }

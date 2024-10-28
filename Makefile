@@ -1,8 +1,8 @@
 install:
 	bun install --frozen-lockfile
 
-test:
-	bun test
+ci:
+	bun run ci
 
 start run:
 	bun start
