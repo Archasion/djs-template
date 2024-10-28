@@ -18,12 +18,12 @@
     "discord.js": "^14.16.3"
   },
   "devDependencies": {
-    "@dword-design/eslint-plugin-import-alias": "^5.1.1",
-    "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "^9.13.0",
-    "@typescript-eslint/eslint-plugin": "^8.11.0",
-    "@typescript-eslint/parser": "^8.11.0",
+    "@dword-design/eslint-plugin-import-alias": "5.1.1",
+    "@eslint/eslintrc": "3.1.0",
+    "@eslint/js": "9.13.0",
+    "@typescript-eslint/eslint-plugin": "8.11.0",
+    "@typescript-eslint/parser": "8.11.0",
     "bun-types": "latest",
-    "globals": "^15.11.0"
+    "globals": "15.11.0"
   }
 }
