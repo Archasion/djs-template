@@ -24,6 +24,6 @@
     "@typescript-eslint/eslint-plugin": "8.18.1",
     "@typescript-eslint/parser": "8.18.1",
     "bun-types": "latest",
-    "globals": "15.13.0"
+    "globals": "15.14.0"
   }
 }
