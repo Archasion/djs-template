@@ -20,7 +20,7 @@
   "devDependencies": {
     "@dword-design/eslint-plugin-import-alias": "5.1.1",
     "@eslint/eslintrc": "3.2.0",
-    "@eslint/js": "9.17.0",
+    "@eslint/js": "9.18.0",
     "@typescript-eslint/eslint-plugin": "8.19.1",
     "@typescript-eslint/parser": "8.19.1",
     "bun-types": "latest",
