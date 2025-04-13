@@ -18,7 +18,7 @@
     "discord.js": "^14.16.3"
   },
   "devDependencies": {
-    "@dword-design/eslint-plugin-import-alias": "5.1.1",
+    "@dword-design/eslint-plugin-import-alias": "5.1.2",
     "@eslint/eslintrc": "3.3.1",
     "@eslint/js": "9.24.0",
     "@typescript-eslint/eslint-plugin": "8.29.1",
