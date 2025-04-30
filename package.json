@@ -15,7 +15,7 @@
     "ci": "eslint . && bun test"
   },
   "dependencies": {
-    "discord.js": "^14.16.3"
+    "discord.js": "^14.19.2"
   },
   "devDependencies": {
     "@dword-design/eslint-plugin-import-alias": "5.1.2",
